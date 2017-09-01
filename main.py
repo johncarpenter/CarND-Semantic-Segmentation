@@ -33,7 +33,7 @@ def load_vgg(sess, vgg_path):
     vgg_layer4_out_tensor_name = 'layer4_out:0'
     vgg_layer7_out_tensor_name = 'layer7_out:0'
 
-    tf.saved_model.loader.load(sess,[vgg_tag],vgg_tag);
+    tf.saved_model.loader.load(sess,[vgg_tag],vgg_path);
     graph = tf.get_default_graph();
 
     img = graph.get_tensor_by_name(vgg_input_tensor_name);
@@ -57,9 +57,9 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     """
 
     # regularizer is used to prevent the weights from getting too large and saturating the output
-    conv_1x1_layer7 = tf.layers.conv2d(vgg_layer7,num_classes,1,padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
-    conv_1x1_layer4 = tf.layers.conv2d(vgg_layer4,num_classes,1,padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
-    conv_1x1_layer3 = tf.layers.conv2d(vgg_layer3,num_classes,1,padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    conv_1x1_layer7 = tf.layers.conv2d(vgg_layer7_out,num_classes,1,padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    conv_1x1_layer4 = tf.layers.conv2d(vgg_layer4_out,num_classes,1,padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    conv_1x1_layer3 = tf.layers.conv2d(vgg_layer3_out,num_classes,1,padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
 
     output =tf.layers.conv2d_transpose(conv_1x1_layer7,num_classes,4,strides=(2,2),padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
     output = tf.add(output, conv_1x1_layer4)
@@ -110,8 +110,8 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     :param keep_prob: TF Placeholder for dropout keep probability
     :param learning_rate: TF Placeholder for learning rate
     """
-    for epochs in epochs:
-        for image,label in get_batches_fn(batch_size):
+    for epoch in range(epochs):
+        for batch, (image,label) in enumerate(get_batches_fn(batch_size)):
             feed_dict = {input_image : image, correct_label : label, keep_prob : 0.5, learning_rate : 1e-5}
             _, loss = sess.run([train_op, cross_entropy_loss], feed_dict=feed_dict)
             print('Epoch ',epoch, ' Batch ',batch,' Loss ',loss)

@@ -56,18 +56,19 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     :return: The Tensor for the last layer of output
     """
 
+#,kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3)
     # regularizer is used to prevent the weights from getting too large and saturating the output
-    conv_1x1_layer7 = tf.layers.conv2d(vgg_layer7_out,num_classes,1,padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
-    conv_1x1_layer4 = tf.layers.conv2d(vgg_layer4_out,num_classes,1,padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
-    conv_1x1_layer3 = tf.layers.conv2d(vgg_layer3_out,num_classes,1,padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    conv_1x1_layer7 = tf.layers.conv2d(vgg_layer7_out,num_classes,1,padding='same')
+    conv_1x1_layer4 = tf.layers.conv2d(vgg_layer4_out,num_classes,1,padding='same')
+    conv_1x1_layer3 = tf.layers.conv2d(vgg_layer3_out,num_classes,1,padding='same')
 
-    output =tf.layers.conv2d_transpose(conv_1x1_layer7,num_classes,4,strides=(2,2),padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    output =tf.layers.conv2d_transpose(conv_1x1_layer7,num_classes,4,strides=(2,2),padding='same')
     output = tf.add(output, conv_1x1_layer4)
 
-    output = tf.layers.conv2d_transpose(output, num_classes, 4, strides=(2,2), padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    output = tf.layers.conv2d_transpose(output, num_classes, 4, strides=(2,2), padding='same')
     output = tf.add(output, conv_1x1_layer3)
 
-    output = tf.layers.conv2d_transpose(output, num_classes, 16, strides=(8, 8),padding='same',kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3))
+    output = tf.layers.conv2d_transpose(output, num_classes, 16, strides=(8, 8),padding='same')
 
     return output
 tests.test_layers(layers)
@@ -141,7 +142,7 @@ def run():
 
         # OPTIONAL: Augment Images for better results
         #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
-        epochs = 6
+        epochs = 3
         batch_size = 2
         learning_rate = tf.placeholder(tf.float32)
         correct_label = tf.placeholder(tf.int32, [None, None, None, num_classes])

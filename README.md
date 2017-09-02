@@ -1,6 +1,15 @@
 # Semantic Segmentation
 ### Introduction
-In this project, you'll label the pixels of a road in images using a Fully Convolutional Network (FCN).
+This project seeks to identify sections of roadway within an image using a fully connected NN (FCN). The FCN that is used is based on (this paper)[https://people.eecs.berkeley.edu/~jonlong/long_shelhamer_fcn.pdf].
+
+The FCN uses the VGG16 recognition model as a seed and extracts layers 3,4 & 7 to feed back into the encoder process. This process described in the paper above works well to segment images based on the feature sets from the training data. 
+
+#### Results
+![Training Image](../master/results/um_000000_train.png)
+
+![Classified Image](../master/results/um_000000_results.png)
+
+
 
 ### Setup
 ##### Frameworks and Packages
@@ -21,16 +30,3 @@ Run the following command to run the project:
 ```
 python main.py
 ```
-**Note** If running this in Jupyter Notebook system messages, such as those regarding test status, may appear in the terminal rather than the notebook.
-
-### Submission
-1. Ensure you've passed all the unit tests.
-2. Ensure you pass all points on [the rubric](https://review.udacity.com/#!/rubrics/989/view).
-3. Submit the following in a zip file.
- - `helper.py`
- - `main.py`
- - `project_tests.py`
- - Newest inference images from `runs` folder
- 
- ## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).

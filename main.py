@@ -57,28 +57,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     """
 
     # regularizer is used to prevent the weights from getting too large and saturating the output
-    '''
-    conv_1x1_layer7 = tf.layers.conv2d(vgg_layer7_out,num_classes,1,padding='same', kernel_initializer= tf.random_normal_initializer(stddev=0.01),
-                                   kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
 
-    output =tf.layers.conv2d_transpose(conv_1x1_layer7,num_classes,4,strides=(2,2),padding='same', kernel_initializer= tf.random_normal_initializer(stddev=0.01),
-                                   kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
-
-    conv_1x1_layer4 = tf.layers.conv2d(vgg_layer4_out,num_classes,1,padding='same', kernel_initializer= tf.random_normal_initializer(stddev=0.01),
-                                   kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
-    output = tf.add(output, conv_1x1_layer4)
-
-    output = tf.layers.conv2d_transpose(output, num_classes, 4, strides=(2,2), padding='same', kernel_initializer= tf.random_normal_initializer(stddev=0.01),
-                                   kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
-
-    conv_1x1_layer3 = tf.layers.conv2d(vgg_layer3_out,num_classes,1,padding='same', kernel_initializer= tf.random_normal_initializer(stddev=0.01),
-                                   kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
-
-    output = tf.add(output, conv_1x1_layer3)
-
-    output = tf.layers.conv2d_transpose(output, num_classes, 16, strides=(8, 8),padding='same', kernel_initializer= tf.random_normal_initializer(stddev=0.01),
-                                   kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
-                                   '''
     conv_1x1_layer7 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1,
                                    padding= 'same',
                                    kernel_initializer= tf.random_normal_initializer(stddev=0.01),
